@@ -1,0 +1,832 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> statement
+Rule 1     statement -> query SEMICOLON
+Rule 2     query -> selection
+Rule 3     query -> deletion
+Rule 4     query -> insertion
+Rule 5     query -> updation
+Rule 6     setting -> SET TABLE STRING AS IDENTIFIER
+Rule 7     selection -> SELECT columns FROM table
+Rule 8     selection -> SELECT columns FROM table WHERE expression
+Rule 9     deletion -> DELETE FROM table
+Rule 10    deletion -> DELETE FROM table WHERE expression
+Rule 11    insertion -> INSERT INTO table VALUES LPAREN fields RPAREN
+Rule 12    insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN
+Rule 13    updation -> UPDATE table SET updates
+Rule 14    updation -> UPDATE table SET updates WHERE expression
+Rule 15    table -> IDENTIFIER
+Rule 16    expression -> IDENTIFIER LESS NUMBER
+Rule 17    expression -> IDENTIFIER GREATER NUMBER
+Rule 18    expression -> IDENTIFIER EQUAL NUMBER
+Rule 19    expression -> IDENTIFIER EQUAL STRING
+Rule 20    expression -> expression OR expression
+Rule 21    expression -> expression AND expression
+Rule 22    expression -> expression COMMA expression
+Rule 23    columns -> column
+Rule 24    columns -> columns COMMA column
+Rule 25    column -> IDENTIFIER
+Rule 26    fields -> field
+Rule 27    fields -> fields COMMA field
+Rule 28    field -> STRING
+Rule 29    field -> NUMBER
+Rule 30    updates -> update
+Rule 31    updates -> updates COMMA update
+Rule 32    update -> IDENTIFIER EQUAL STRING
+Rule 33    update -> IDENTIFIER EQUAL NUMBER
+
+Terminals, with rules where they appear
+
+AND                  : 21
+AS                   : 6
+COMMA                : 22 24 27 31
+DELETE               : 9 10
+EQUAL                : 18 19 32 33
+FROM                 : 7 8 9 10
+GREATER              : 17
+IDENTIFIER           : 6 15 16 17 18 19 25 32 33
+INSERT               : 11 12
+INTO                 : 11 12
+LESS                 : 16
+LPAREN               : 11 12 12
+NUMBER               : 16 17 18 29 33
+OR                   : 20
+RPAREN               : 11 12 12
+SELECT               : 7 8
+SEMICOLON            : 1
+SET                  : 6 13 14
+STRING               : 6 19 28 32
+TABLE                : 6
+UPDATE               : 13 14
+VALUES               : 11 12
+WHERE                : 8 10 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+column               : 23 24
+columns              : 7 8 12 24
+deletion             : 3
+expression           : 8 10 14 20 20 21 21 22 22
+field                : 26 27
+fields               : 11 12 27
+insertion            : 4
+query                : 1
+selection            : 2
+setting              : 
+statement            : 0
+table                : 7 8 9 10 11 12 13 14
+update               : 30 31
+updates              : 13 14 31
+updation             : 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (1) statement -> . query SEMICOLON
+    (2) query -> . selection
+    (3) query -> . deletion
+    (4) query -> . insertion
+    (5) query -> . updation
+    (7) selection -> . SELECT columns FROM table
+    (8) selection -> . SELECT columns FROM table WHERE expression
+    (9) deletion -> . DELETE FROM table
+    (10) deletion -> . DELETE FROM table WHERE expression
+    (11) insertion -> . INSERT INTO table VALUES LPAREN fields RPAREN
+    (12) insertion -> . INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN
+    (13) updation -> . UPDATE table SET updates
+    (14) updation -> . UPDATE table SET updates WHERE expression
+
+    SELECT          shift and go to state 7
+    DELETE          shift and go to state 8
+    INSERT          shift and go to state 9
+    UPDATE          shift and go to state 10
+
+    statement                      shift and go to state 1
+    query                          shift and go to state 2
+    selection                      shift and go to state 3
+    deletion                       shift and go to state 4
+    insertion                      shift and go to state 5
+    updation                       shift and go to state 6
+
+state 1
+
+    (0) S' -> statement .
+
+
+
+state 2
+
+    (1) statement -> query . SEMICOLON
+
+    SEMICOLON       shift and go to state 11
+
+
+state 3
+
+    (2) query -> selection .
+
+    SEMICOLON       reduce using rule 2 (query -> selection .)
+
+
+state 4
+
+    (3) query -> deletion .
+
+    SEMICOLON       reduce using rule 3 (query -> deletion .)
+
+
+state 5
+
+    (4) query -> insertion .
+
+    SEMICOLON       reduce using rule 4 (query -> insertion .)
+
+
+state 6
+
+    (5) query -> updation .
+
+    SEMICOLON       reduce using rule 5 (query -> updation .)
+
+
+state 7
+
+    (7) selection -> SELECT . columns FROM table
+    (8) selection -> SELECT . columns FROM table WHERE expression
+    (23) columns -> . column
+    (24) columns -> . columns COMMA column
+    (25) column -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 14
+
+    columns                        shift and go to state 12
+    column                         shift and go to state 13
+
+state 8
+
+    (9) deletion -> DELETE . FROM table
+    (10) deletion -> DELETE . FROM table WHERE expression
+
+    FROM            shift and go to state 15
+
+
+state 9
+
+    (11) insertion -> INSERT . INTO table VALUES LPAREN fields RPAREN
+    (12) insertion -> INSERT . INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN
+
+    INTO            shift and go to state 16
+
+
+state 10
+
+    (13) updation -> UPDATE . table SET updates
+    (14) updation -> UPDATE . table SET updates WHERE expression
+    (15) table -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 18
+
+    table                          shift and go to state 17
+
+state 11
+
+    (1) statement -> query SEMICOLON .
+
+    $end            reduce using rule 1 (statement -> query SEMICOLON .)
+
+
+state 12
+
+    (7) selection -> SELECT columns . FROM table
+    (8) selection -> SELECT columns . FROM table WHERE expression
+    (24) columns -> columns . COMMA column
+
+    FROM            shift and go to state 19
+    COMMA           shift and go to state 20
+
+
+state 13
+
+    (23) columns -> column .
+
+    FROM            reduce using rule 23 (columns -> column .)
+    COMMA           reduce using rule 23 (columns -> column .)
+    RPAREN          reduce using rule 23 (columns -> column .)
+
+
+state 14
+
+    (25) column -> IDENTIFIER .
+
+    FROM            reduce using rule 25 (column -> IDENTIFIER .)
+    COMMA           reduce using rule 25 (column -> IDENTIFIER .)
+    RPAREN          reduce using rule 25 (column -> IDENTIFIER .)
+
+
+state 15
+
+    (9) deletion -> DELETE FROM . table
+    (10) deletion -> DELETE FROM . table WHERE expression
+    (15) table -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 18
+
+    table                          shift and go to state 21
+
+state 16
+
+    (11) insertion -> INSERT INTO . table VALUES LPAREN fields RPAREN
+    (12) insertion -> INSERT INTO . table LPAREN columns RPAREN VALUES LPAREN fields RPAREN
+    (15) table -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 18
+
+    table                          shift and go to state 22
+
+state 17
+
+    (13) updation -> UPDATE table . SET updates
+    (14) updation -> UPDATE table . SET updates WHERE expression
+
+    SET             shift and go to state 23
+
+
+state 18
+
+    (15) table -> IDENTIFIER .
+
+    SET             reduce using rule 15 (table -> IDENTIFIER .)
+    WHERE           reduce using rule 15 (table -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 15 (table -> IDENTIFIER .)
+    VALUES          reduce using rule 15 (table -> IDENTIFIER .)
+    LPAREN          reduce using rule 15 (table -> IDENTIFIER .)
+
+
+state 19
+
+    (7) selection -> SELECT columns FROM . table
+    (8) selection -> SELECT columns FROM . table WHERE expression
+    (15) table -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 18
+
+    table                          shift and go to state 24
+
+state 20
+
+    (24) columns -> columns COMMA . column
+    (25) column -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 14
+
+    column                         shift and go to state 25
+
+state 21
+
+    (9) deletion -> DELETE FROM table .
+    (10) deletion -> DELETE FROM table . WHERE expression
+
+    SEMICOLON       reduce using rule 9 (deletion -> DELETE FROM table .)
+    WHERE           shift and go to state 26
+
+
+state 22
+
+    (11) insertion -> INSERT INTO table . VALUES LPAREN fields RPAREN
+    (12) insertion -> INSERT INTO table . LPAREN columns RPAREN VALUES LPAREN fields RPAREN
+
+    VALUES          shift and go to state 27
+    LPAREN          shift and go to state 28
+
+
+state 23
+
+    (13) updation -> UPDATE table SET . updates
+    (14) updation -> UPDATE table SET . updates WHERE expression
+    (30) updates -> . update
+    (31) updates -> . updates COMMA update
+    (32) update -> . IDENTIFIER EQUAL STRING
+    (33) update -> . IDENTIFIER EQUAL NUMBER
+
+    IDENTIFIER      shift and go to state 31
+
+    updates                        shift and go to state 29
+    update                         shift and go to state 30
+
+state 24
+
+    (7) selection -> SELECT columns FROM table .
+    (8) selection -> SELECT columns FROM table . WHERE expression
+
+    SEMICOLON       reduce using rule 7 (selection -> SELECT columns FROM table .)
+    WHERE           shift and go to state 32
+
+
+state 25
+
+    (24) columns -> columns COMMA column .
+
+    FROM            reduce using rule 24 (columns -> columns COMMA column .)
+    COMMA           reduce using rule 24 (columns -> columns COMMA column .)
+    RPAREN          reduce using rule 24 (columns -> columns COMMA column .)
+
+
+state 26
+
+    (10) deletion -> DELETE FROM table WHERE . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 33
+
+state 27
+
+    (11) insertion -> INSERT INTO table VALUES . LPAREN fields RPAREN
+
+    LPAREN          shift and go to state 35
+
+
+state 28
+
+    (12) insertion -> INSERT INTO table LPAREN . columns RPAREN VALUES LPAREN fields RPAREN
+    (23) columns -> . column
+    (24) columns -> . columns COMMA column
+    (25) column -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 14
+
+    columns                        shift and go to state 36
+    column                         shift and go to state 13
+
+state 29
+
+    (13) updation -> UPDATE table SET updates .
+    (14) updation -> UPDATE table SET updates . WHERE expression
+    (31) updates -> updates . COMMA update
+
+    SEMICOLON       reduce using rule 13 (updation -> UPDATE table SET updates .)
+    WHERE           shift and go to state 37
+    COMMA           shift and go to state 38
+
+
+state 30
+
+    (30) updates -> update .
+
+    WHERE           reduce using rule 30 (updates -> update .)
+    COMMA           reduce using rule 30 (updates -> update .)
+    SEMICOLON       reduce using rule 30 (updates -> update .)
+
+
+state 31
+
+    (32) update -> IDENTIFIER . EQUAL STRING
+    (33) update -> IDENTIFIER . EQUAL NUMBER
+
+    EQUAL           shift and go to state 39
+
+
+state 32
+
+    (8) selection -> SELECT columns FROM table WHERE . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 40
+
+state 33
+
+    (10) deletion -> DELETE FROM table WHERE expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+    SEMICOLON       reduce using rule 10 (deletion -> DELETE FROM table WHERE expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+
+state 34
+
+    (16) expression -> IDENTIFIER . LESS NUMBER
+    (17) expression -> IDENTIFIER . GREATER NUMBER
+    (18) expression -> IDENTIFIER . EQUAL NUMBER
+    (19) expression -> IDENTIFIER . EQUAL STRING
+
+    LESS            shift and go to state 44
+    GREATER         shift and go to state 45
+    EQUAL           shift and go to state 46
+
+
+state 35
+
+    (11) insertion -> INSERT INTO table VALUES LPAREN . fields RPAREN
+    (26) fields -> . field
+    (27) fields -> . fields COMMA field
+    (28) field -> . STRING
+    (29) field -> . NUMBER
+
+    STRING          shift and go to state 49
+    NUMBER          shift and go to state 50
+
+    fields                         shift and go to state 47
+    field                          shift and go to state 48
+
+state 36
+
+    (12) insertion -> INSERT INTO table LPAREN columns . RPAREN VALUES LPAREN fields RPAREN
+    (24) columns -> columns . COMMA column
+
+    RPAREN          shift and go to state 51
+    COMMA           shift and go to state 20
+
+
+state 37
+
+    (14) updation -> UPDATE table SET updates WHERE . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 52
+
+state 38
+
+    (31) updates -> updates COMMA . update
+    (32) update -> . IDENTIFIER EQUAL STRING
+    (33) update -> . IDENTIFIER EQUAL NUMBER
+
+    IDENTIFIER      shift and go to state 31
+
+    update                         shift and go to state 53
+
+state 39
+
+    (32) update -> IDENTIFIER EQUAL . STRING
+    (33) update -> IDENTIFIER EQUAL . NUMBER
+
+    STRING          shift and go to state 54
+    NUMBER          shift and go to state 55
+
+
+state 40
+
+    (8) selection -> SELECT columns FROM table WHERE expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+    SEMICOLON       reduce using rule 8 (selection -> SELECT columns FROM table WHERE expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+
+state 41
+
+    (20) expression -> expression OR . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 56
+
+state 42
+
+    (21) expression -> expression AND . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 57
+
+state 43
+
+    (22) expression -> expression COMMA . expression
+    (16) expression -> . IDENTIFIER LESS NUMBER
+    (17) expression -> . IDENTIFIER GREATER NUMBER
+    (18) expression -> . IDENTIFIER EQUAL NUMBER
+    (19) expression -> . IDENTIFIER EQUAL STRING
+    (20) expression -> . expression OR expression
+    (21) expression -> . expression AND expression
+    (22) expression -> . expression COMMA expression
+
+    IDENTIFIER      shift and go to state 34
+
+    expression                     shift and go to state 58
+
+state 44
+
+    (16) expression -> IDENTIFIER LESS . NUMBER
+
+    NUMBER          shift and go to state 59
+
+
+state 45
+
+    (17) expression -> IDENTIFIER GREATER . NUMBER
+
+    NUMBER          shift and go to state 60
+
+
+state 46
+
+    (18) expression -> IDENTIFIER EQUAL . NUMBER
+    (19) expression -> IDENTIFIER EQUAL . STRING
+
+    NUMBER          shift and go to state 61
+    STRING          shift and go to state 62
+
+
+state 47
+
+    (11) insertion -> INSERT INTO table VALUES LPAREN fields . RPAREN
+    (27) fields -> fields . COMMA field
+
+    RPAREN          shift and go to state 63
+    COMMA           shift and go to state 64
+
+
+state 48
+
+    (26) fields -> field .
+
+    RPAREN          reduce using rule 26 (fields -> field .)
+    COMMA           reduce using rule 26 (fields -> field .)
+
+
+state 49
+
+    (28) field -> STRING .
+
+    RPAREN          reduce using rule 28 (field -> STRING .)
+    COMMA           reduce using rule 28 (field -> STRING .)
+
+
+state 50
+
+    (29) field -> NUMBER .
+
+    RPAREN          reduce using rule 29 (field -> NUMBER .)
+    COMMA           reduce using rule 29 (field -> NUMBER .)
+
+
+state 51
+
+    (12) insertion -> INSERT INTO table LPAREN columns RPAREN . VALUES LPAREN fields RPAREN
+
+    VALUES          shift and go to state 65
+
+
+state 52
+
+    (14) updation -> UPDATE table SET updates WHERE expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+    SEMICOLON       reduce using rule 14 (updation -> UPDATE table SET updates WHERE expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+
+state 53
+
+    (31) updates -> updates COMMA update .
+
+    WHERE           reduce using rule 31 (updates -> updates COMMA update .)
+    COMMA           reduce using rule 31 (updates -> updates COMMA update .)
+    SEMICOLON       reduce using rule 31 (updates -> updates COMMA update .)
+
+
+state 54
+
+    (32) update -> IDENTIFIER EQUAL STRING .
+
+    WHERE           reduce using rule 32 (update -> IDENTIFIER EQUAL STRING .)
+    COMMA           reduce using rule 32 (update -> IDENTIFIER EQUAL STRING .)
+    SEMICOLON       reduce using rule 32 (update -> IDENTIFIER EQUAL STRING .)
+
+
+state 55
+
+    (33) update -> IDENTIFIER EQUAL NUMBER .
+
+    WHERE           reduce using rule 33 (update -> IDENTIFIER EQUAL NUMBER .)
+    COMMA           reduce using rule 33 (update -> IDENTIFIER EQUAL NUMBER .)
+    SEMICOLON       reduce using rule 33 (update -> IDENTIFIER EQUAL NUMBER .)
+
+
+state 56
+
+    (20) expression -> expression OR expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for COMMA resolved as shift
+    SEMICOLON       reduce using rule 20 (expression -> expression OR expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+  ! OR              [ reduce using rule 20 (expression -> expression OR expression .) ]
+  ! AND             [ reduce using rule 20 (expression -> expression OR expression .) ]
+  ! COMMA           [ reduce using rule 20 (expression -> expression OR expression .) ]
+
+
+state 57
+
+    (21) expression -> expression AND expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for COMMA resolved as shift
+    SEMICOLON       reduce using rule 21 (expression -> expression AND expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+  ! OR              [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! AND             [ reduce using rule 21 (expression -> expression AND expression .) ]
+  ! COMMA           [ reduce using rule 21 (expression -> expression AND expression .) ]
+
+
+state 58
+
+    (22) expression -> expression COMMA expression .
+    (20) expression -> expression . OR expression
+    (21) expression -> expression . AND expression
+    (22) expression -> expression . COMMA expression
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for COMMA resolved as shift
+    SEMICOLON       reduce using rule 22 (expression -> expression COMMA expression .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    COMMA           shift and go to state 43
+
+  ! OR              [ reduce using rule 22 (expression -> expression COMMA expression .) ]
+  ! AND             [ reduce using rule 22 (expression -> expression COMMA expression .) ]
+  ! COMMA           [ reduce using rule 22 (expression -> expression COMMA expression .) ]
+
+
+state 59
+
+    (16) expression -> IDENTIFIER LESS NUMBER .
+
+    OR              reduce using rule 16 (expression -> IDENTIFIER LESS NUMBER .)
+    AND             reduce using rule 16 (expression -> IDENTIFIER LESS NUMBER .)
+    COMMA           reduce using rule 16 (expression -> IDENTIFIER LESS NUMBER .)
+    SEMICOLON       reduce using rule 16 (expression -> IDENTIFIER LESS NUMBER .)
+
+
+state 60
+
+    (17) expression -> IDENTIFIER GREATER NUMBER .
+
+    OR              reduce using rule 17 (expression -> IDENTIFIER GREATER NUMBER .)
+    AND             reduce using rule 17 (expression -> IDENTIFIER GREATER NUMBER .)
+    COMMA           reduce using rule 17 (expression -> IDENTIFIER GREATER NUMBER .)
+    SEMICOLON       reduce using rule 17 (expression -> IDENTIFIER GREATER NUMBER .)
+
+
+state 61
+
+    (18) expression -> IDENTIFIER EQUAL NUMBER .
+
+    OR              reduce using rule 18 (expression -> IDENTIFIER EQUAL NUMBER .)
+    AND             reduce using rule 18 (expression -> IDENTIFIER EQUAL NUMBER .)
+    COMMA           reduce using rule 18 (expression -> IDENTIFIER EQUAL NUMBER .)
+    SEMICOLON       reduce using rule 18 (expression -> IDENTIFIER EQUAL NUMBER .)
+
+
+state 62
+
+    (19) expression -> IDENTIFIER EQUAL STRING .
+
+    OR              reduce using rule 19 (expression -> IDENTIFIER EQUAL STRING .)
+    AND             reduce using rule 19 (expression -> IDENTIFIER EQUAL STRING .)
+    COMMA           reduce using rule 19 (expression -> IDENTIFIER EQUAL STRING .)
+    SEMICOLON       reduce using rule 19 (expression -> IDENTIFIER EQUAL STRING .)
+
+
+state 63
+
+    (11) insertion -> INSERT INTO table VALUES LPAREN fields RPAREN .
+
+    SEMICOLON       reduce using rule 11 (insertion -> INSERT INTO table VALUES LPAREN fields RPAREN .)
+
+
+state 64
+
+    (27) fields -> fields COMMA . field
+    (28) field -> . STRING
+    (29) field -> . NUMBER
+
+    STRING          shift and go to state 49
+    NUMBER          shift and go to state 50
+
+    field                          shift and go to state 66
+
+state 65
+
+    (12) insertion -> INSERT INTO table LPAREN columns RPAREN VALUES . LPAREN fields RPAREN
+
+    LPAREN          shift and go to state 67
+
+
+state 66
+
+    (27) fields -> fields COMMA field .
+
+    RPAREN          reduce using rule 27 (fields -> fields COMMA field .)
+    COMMA           reduce using rule 27 (fields -> fields COMMA field .)
+
+
+state 67
+
+    (12) insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN . fields RPAREN
+    (26) fields -> . field
+    (27) fields -> . fields COMMA field
+    (28) field -> . STRING
+    (29) field -> . NUMBER
+
+    STRING          shift and go to state 49
+    NUMBER          shift and go to state 50
+
+    fields                         shift and go to state 68
+    field                          shift and go to state 48
+
+state 68
+
+    (12) insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields . RPAREN
+    (27) fields -> fields . COMMA field
+
+    RPAREN          shift and go to state 69
+    COMMA           shift and go to state 64
+
+
+state 69
+
+    (12) insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN .
+
+    SEMICOLON       reduce using rule 12 (insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for OR in state 56 resolved as shift
+WARNING: shift/reduce conflict for AND in state 56 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 56 resolved as shift
+WARNING: shift/reduce conflict for OR in state 57 resolved as shift
+WARNING: shift/reduce conflict for AND in state 57 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 57 resolved as shift
+WARNING: shift/reduce conflict for OR in state 58 resolved as shift
+WARNING: shift/reduce conflict for AND in state 58 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 58 resolved as shift

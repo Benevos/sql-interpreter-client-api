@@ -18,7 +18,7 @@ Next to it you need to do is to create an `.env` file in the root of the repo wi
 postgresql://user:password@address/database
 ```
 
-Then, go to the route `./api/src` and launch `app.py with this command (it is recommended to keep the port since the code contains some references to it in the client, you can change the port but you must also do it in code):
+Then, go to the route `./api/src` and launch `app.py` with this command (it is recommended to keep the port since the code contains some references to it in the client, you can change the port but you must also do it in code):
 
 ```bash
 uvicorn app:app --reload --host 0.0.0.0 --port 8085

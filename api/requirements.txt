@@ -1,0 +1,9 @@
+fastapi
+sqlmodel
+uvicorn
+ply
+pandas
+scikit-learn
+scipy
+numpy
+pydantic

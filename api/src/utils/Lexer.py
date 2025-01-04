@@ -37,7 +37,9 @@ class SQLLexer:
         'and': 'AND',
         'or': 'OR',
         'table': 'TABLE',
-        'as': 'AS'
+        'as': 'AS',
+        'show': 'SHOW',
+        'tables': 'TABLES'
     }
 
     tokens = list(tokens) + list(reserved.values())
@@ -58,7 +60,7 @@ class SQLLexer:
         return t
 
     def t_STRING(self, t):
-        r'\".*\"|\'.*\''
+        r"'[\w\s]+'"
         return t
 
     def t_error(self, t):

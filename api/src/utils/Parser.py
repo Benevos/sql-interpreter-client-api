@@ -22,6 +22,10 @@ class SQLParser:
         self.query_result = None
         self.lexer = SQLLexer()
         self.parser = yacc.yacc(module=self)
+    
+    def remove_items(self, test_list, item): 
+        res = list(filter((item).__ne__, test_list)) 
+        return res 
 
     def do_columns_exist(self, table: DataFrame, columns: list[str]):
         for column in columns:
@@ -43,12 +47,14 @@ class SQLParser:
                 else:
                     cleaned_fields.append(float(field))
             except ValueError:
-                cleaned_fields.append(field.strip())
+                cleaned_fields.append(field.strip().replace("'", ""))
         return cleaned_fields
     
     def clean_columns_from_string(self, conditions: str):
-        columns = re.findall(f"[A-Za-z]+", conditions.replace("and", "").replace("or", ""))
-        strings: list[str] = re.findall(r"'[A-Za-z]+'", conditions)
+        
+        columns = re.findall(r"[A-Za-z]+", conditions.replace(" and ", "").replace(" or ", ""))
+        strings: list[str] = re.findall(r"'[A-Za-z]+|[A-Za-z]+'", conditions)
+        
         cleaned_strings = []
         for string in strings:
             cleaned_strings.append(string.replace("'", "").strip())
@@ -56,12 +62,10 @@ class SQLParser:
         if(len(strings) <= 0):
             return columns
         
-        cleaned_columns = []
-        for cleaned_string in cleaned_strings:
-            for column in columns:
-                if(cleaned_string != column):
-                    cleaned_columns.append(column)
-                    
+        cleaned_columns = columns
+        for clean_string in cleaned_strings:
+            cleaned_columns = self.remove_items(cleaned_columns, clean_string)
+        
         return cleaned_columns
         
     def p_statement(self, p: list[str]):
@@ -71,9 +75,22 @@ class SQLParser:
         '''query : selection
                  | deletion
                  | insertion
-                 | updation'''
+                 | updation
+                 | showing'''
         self.query_result = f"{p[1]}"
 
+    def p_show_tables(self, p: list[str]):
+        '''showing : SHOW TABLES'''
+        tables = self.tables.keys()
+        output = ""
+        
+        for table in tables:
+            output += f"{table}\n"
+            
+        p[0] = output
+        
+        
+    
     def p_set_table_from(self, p: list[str]):
         'setting : SET TABLE STRING AS IDENTIFIER'
         file_path = p[3][1:-1]
@@ -103,9 +120,9 @@ class SQLParser:
                 self.error_status = True
                 p[0] = f"ERROR: La columna {column} no existe en {p[4]}"
                 return p[0]
-            p[0] = table[columns].to_string()
+            p[0] = table[columns].to_string(index=False)
         else:
-            p[0] = table.to_string()
+            p[0] = table.to_string(index=False)
             
         return p[0]
         
@@ -133,7 +150,7 @@ class SQLParser:
         conditions = p[6].strip().replace(" and ", " & ").replace(" or ", " | ").replace("=", "==")
         filtered_table = table.query(conditions)
         
-        p[0] = filtered_table.to_string()
+        p[0] = filtered_table.to_string(index=False)
 
     def p_delete_from(self, p: list[str]):
         'deletion : DELETE FROM table'
@@ -228,33 +245,6 @@ class SQLParser:
         
         p[0] = f"Valores {cleaned_fields} insertados en las columnas {columns} de la tabla {p[3]}."
 
-    def p_update_set(self, p: list[str]):
-        'updation : UPDATE table SET updates'
-        
-        if not self.do_table_exist(p[2]):
-            self.error_status = True
-            p[0] = f"ERROR: La tabla {p[2]} no existe"
-            return p[0]
-        
-        table = pd.read_csv(TABLES_PATH + self.tables[p[2]])
-        columns = self.clean_columns_from_string(p[4])
-        values = re.findall(r"'[A-Za-z]+'|\d+\.\d+|\d+", p[4])
-        
-        columns_exist, found_column = self.do_columns_exist(table, columns)
-        if not columns_exist:
-                self.error_status = True
-                p[0] = f"ERROR: La columna {found_column} no existe en {p[3]}"
-                return p[0]
-        
-        counter = 0
-        for column in columns:
-            table[column] = values[counter]
-            counter += 1
-            
-        table.to_csv(TABLES_PATH + self.tables[p[2]], index=False)
-        
-        p[0] = f"Tabla {p[2]} actualizada con valores {p[4]}."
-
     def p_update_set_where(self, p: list[str]):
         'updation : UPDATE table SET updates WHERE expression'
         
@@ -279,7 +269,7 @@ class SQLParser:
                 p[0] = f"ERROR: La columna {found_column} no existe en {p[3]}"
                 return p[0]
         
-        update_values = re.findall(r"'[A-Za-z]+'|\d+\.\d+|\d+", p[4])  
+        update_values = re.findall(r"'[A-Za-z\s]+'|\d+\.\d+|\d+", p[4])  
         
         conditions = p[6].strip().replace(" and ", " & ").replace(" or ", " | ").replace("=", "==")
         queried_table = table.query(conditions)
@@ -294,7 +284,35 @@ class SQLParser:
         result = pd.concat([filtered_table, queried_table])
         result.to_csv(TABLES_PATH + self.tables[p[2]], index=False)
         
-        p[0] = f"TablA {p[2]} actualizada con valores {p[4]} donde {p[6]}."
+        p[0] = f"Tabla {p[2]} actualizada con valores {p[4]} donde {p[6]}."
+        
+    def p_update_set(self, p: list[str]):
+        'updation : UPDATE table SET updates'
+        
+        print("ESTO NO DEBERIA LLAMARSE")
+        if not self.do_table_exist(p[2]):
+            self.error_status = True
+            p[0] = f"ERROR: La tabla {p[2]} no existe"
+            return p[0]
+        
+        table = pd.read_csv(TABLES_PATH + self.tables[p[2]])
+        columns = self.clean_columns_from_string(p[4])
+        values = re.findall(r"'[A-Za-z]+'|\d+\.\d+|\d+", p[4])
+        
+        columns_exist, found_column = self.do_columns_exist(table, columns)
+        if not columns_exist:
+                self.error_status = True
+                p[0] = f"ERROR: La columna {found_column} no existe en {p[3]}"
+                return p[0]
+        
+        counter = 0
+        for column in columns:
+            table[column] = values[counter]
+            counter += 1
+            
+        table.to_csv(TABLES_PATH + self.tables[p[2]], index=False)
+        
+        p[0] = f"Tabla {p[2]} actualizada con valores {p[4]}."
 
     def p_table(self, p: list[str]):
         'table : IDENTIFIER'
@@ -358,7 +376,7 @@ class SQLParser:
 
     def p_error(self, p: list[str]):
         self.error_status = True
-        self.error_message = "<<! ERROR: Syntax error"
+        self.query_result = "ERROR: Error de sintaxis"
         
     def get_tokens(self, input):
         tokens = {}
@@ -381,11 +399,11 @@ class SQLParser:
         return tokens
         
     def parse(self, input: str):
-        tokens = self.get_tokens(input.lower())
+        tokens = self.get_tokens(input)
         self.error_status = False
         self.error_message = ""
         self.query_result = None
-        self.parser.parse(input.lower())
+        self.parser.parse(input)
         
         if self.error_status:
             return False, self.query_result, tokens

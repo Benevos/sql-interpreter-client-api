@@ -1,5 +1,6 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from datetime import datetime
 from os.path import realpath
@@ -8,9 +9,10 @@ from models.Query import Query
 from models.Register import Register
 from services.db_config import SessionDep, create_db_and_tables
 from uuid import uuid4
+import pandas as pd
 import logging
 
-TABLES_PATH = realpath(__file__).replace("\\", "/").replace("src/utils/Parser.py", "data/").lower()
+TABLES_PATH = realpath(__file__).replace("\\", "/").replace("src/app.py", "data/").lower()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,11 +28,17 @@ logger.setLevel(logging.DEBUG)
 
 parser = SQLParser()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
+
 @app.get("/")
 def welcome_message():
     return {"message": "Hello, user"}
-
-from fastapi import Form  # Import necesario para recibir datos como Form
 
 @app.post("/upload")
 async def upload_csv(file: UploadFile = File(...), table_alias: str = Form(...)):
@@ -71,18 +79,23 @@ async def upload_csv(file: UploadFile = File(...), table_alias: str = Form(...))
             status_code=400,
             content={"message": "El alias de la tabla es obligatorio."}
         )
+
+    tables_df = pd.read_csv(TABLES_PATH + "tables.csv")
+    tables_df.loc[len(tables_df)] = [table_alias, file.filename]
+    tables_df.to_csv(TABLES_PATH + "tables.csv", index=False)
     
-    parser.tables.update({table_alias: file_path})
+    parser.tables.update({table_alias: file.filename})
     
     return {"filename": file.filename, "message": "Archivo subido y registrado exitosamente.", "alias": table_alias}
 
 @app.post("/query")
-def process_query(query: Query, session: SessionDep):
+def process_query(query: Query, request: Request, session: SessionDep):
     
     success, message, tokens = parser.parse(query.content)
     
     regsiter = Register(
         registerid = uuid4(),
+        clientip = request.client,
         registerdatetime = datetime.now(),
         query = query.content,
         success = success

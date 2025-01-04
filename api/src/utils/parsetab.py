@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND AS COMMA DELETE EQUAL FROM GREATER IDENTIFIER INSERT INTO LESS LPAREN NUMBER OR RPAREN SELECT SEMICOLON SET STRING TABLE UPDATE VALUES WHEREstatement : query SEMICOLONquery : selection\n                 | deletion\n                 | insertion\n                 | updationsetting : SET TABLE STRING AS IDENTIFIERselection : SELECT columns FROM tableselection : SELECT columns FROM table WHERE expressiondeletion : DELETE FROM tabledeletion : DELETE FROM table WHERE expressioninsertion : INSERT INTO table VALUES LPAREN fields RPARENinsertion : INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPARENupdation : UPDATE table SET updatesupdation : UPDATE table SET updates WHERE expressiontable : IDENTIFIERexpression : IDENTIFIER LESS NUMBER\n                      | IDENTIFIER GREATER NUMBER\n                      | IDENTIFIER EQUAL NUMBER\n                      | IDENTIFIER EQUAL STRINGexpression : expression OR expression\n                      | expression AND expressionexpression : expression COMMA expressioncolumns : columncolumns : columns COMMA columncolumn : IDENTIFIERfields : fieldfields : fields COMMA fieldfield : STRING \n                 | NUMBERupdates : updateupdates : updates COMMA updateupdate : IDENTIFIER EQUAL STRING\n                  | IDENTIFIER EQUAL NUMBER'
+_lr_signature = 'AND AS COMMA DELETE EQUAL FROM GREATER IDENTIFIER INSERT INTO LESS LPAREN NUMBER OR RPAREN SELECT SEMICOLON SET SHOW STRING TABLE TABLES UPDATE VALUES WHEREstatement : query SEMICOLONquery : selection\n                 | deletion\n                 | insertion\n                 | updation\n                 | showingshowing : SHOW TABLESsetting : SET TABLE STRING AS IDENTIFIERselection : SELECT columns FROM tableselection : SELECT columns FROM table WHERE expressiondeletion : DELETE FROM tabledeletion : DELETE FROM table WHERE expressioninsertion : INSERT INTO table VALUES LPAREN fields RPARENinsertion : INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPARENupdation : UPDATE table SET updates WHERE expressionupdation : UPDATE table SET updatestable : IDENTIFIERexpression : IDENTIFIER LESS NUMBER\n                      | IDENTIFIER GREATER NUMBER\n                      | IDENTIFIER EQUAL NUMBER\n                      | IDENTIFIER EQUAL STRINGexpression : expression OR expression\n                      | expression AND expressionexpression : expression COMMA expressioncolumns : columncolumns : columns COMMA columncolumn : IDENTIFIERfields : fieldfields : fields COMMA fieldfield : STRING \n                 | NUMBERupdates : updateupdates : updates COMMA updateupdate : IDENTIFIER EQUAL STRING\n                  | IDENTIFIER EQUAL NUMBER'
     
-_lr_action_items = {'SELECT':([0,],[7,]),'DELETE':([0,],[8,]),'INSERT':([0,],[9,]),'UPDATE':([0,],[10,]),'$end':([1,11,],[0,-1,]),'SEMICOLON':([2,3,4,5,6,18,21,24,29,30,33,40,52,53,54,55,56,57,58,59,60,61,62,63,69,],[11,-2,-3,-4,-5,-15,-9,-7,-13,-30,-10,-8,-14,-31,-32,-33,-20,-21,-22,-16,-17,-18,-19,-11,-12,]),'IDENTIFIER':([7,10,15,16,19,20,23,26,28,32,37,38,41,42,43,],[14,18,18,18,18,14,31,34,14,34,34,31,34,34,34,]),'FROM':([8,12,13,14,25,],[15,19,-23,-25,-24,]),'INTO':([9,],[16,]),'COMMA':([12,13,14,25,29,30,33,36,40,47,48,49,50,52,53,54,55,56,57,58,59,60,61,62,66,68,],[20,-23,-25,-24,38,-30,43,20,43,64,-26,-28,-29,43,-31,-32,-33,43,43,43,-16,-17,-18,-19,-27,64,]),'RPAREN':([13,14,25,36,47,48,49,50,66,68,],[-23,-25,-24,51,63,-26,-28,-29,-27,69,]),'SET':([17,18,],[23,-15,]),'WHERE':([18,21,24,29,30,53,54,55,],[-15,26,32,37,-30,-31,-32,-33,]),'VALUES':([18,22,51,],[-15,27,65,]),'LPAREN':([18,22,27,65,],[-15,28,35,67,]),'EQUAL':([31,34,],[39,46,]),'OR':([33,40,52,56,57,58,59,60,61,62,],[41,41,41,41,41,41,-16,-17,-18,-19,]),'AND':([33,40,52,56,57,58,59,60,61,62,],[42,42,42,42,42,42,-16,-17,-18,-19,]),'LESS':([34,],[44,]),'GREATER':([34,],[45,]),'STRING':([35,39,46,64,67,],[49,54,62,49,49,]),'NUMBER':([35,39,44,45,46,64,67,],[50,55,59,60,61,50,50,]),}
+_lr_action_items = {'SELECT':([0,],[8,]),'DELETE':([0,],[9,]),'INSERT':([0,],[10,]),'UPDATE':([0,],[11,]),'SHOW':([0,],[12,]),'$end':([1,13,],[0,-1,]),'SEMICOLON':([2,3,4,5,6,7,20,21,24,27,32,33,36,43,55,56,57,58,59,60,61,62,63,64,65,66,72,],[13,-2,-3,-4,-5,-6,-17,-7,-11,-9,-16,-32,-12,-10,-15,-33,-34,-35,-22,-23,-24,-18,-19,-20,-21,-13,-14,]),'IDENTIFIER':([8,11,17,18,22,23,26,29,31,35,40,41,44,45,46,],[16,20,20,20,20,16,34,37,16,37,37,34,37,37,37,]),'FROM':([9,14,15,16,28,],[17,22,-25,-27,-26,]),'INTO':([10,],[18,]),'TABLES':([12,],[21,]),'COMMA':([14,15,16,28,32,33,36,39,43,50,51,52,53,55,56,57,58,59,60,61,62,63,64,65,69,71,],[23,-25,-27,-26,41,-32,46,23,46,67,-28,-30,-31,46,-33,-34,-35,46,46,46,-18,-19,-20,-21,-29,67,]),'RPAREN':([15,16,28,39,50,51,52,53,69,71,],[-25,-27,-26,54,66,-28,-30,-31,-29,72,]),'SET':([19,20,],[26,-17,]),'WHERE':([20,24,27,32,33,56,57,58,],[-17,29,35,40,-32,-33,-34,-35,]),'VALUES':([20,25,54,],[-17,30,68,]),'LPAREN':([20,25,30,68,],[-17,31,38,70,]),'EQUAL':([34,37,],[42,49,]),'OR':([36,43,55,59,60,61,62,63,64,65,],[44,44,44,44,44,44,-18,-19,-20,-21,]),'AND':([36,43,55,59,60,61,62,63,64,65,],[45,45,45,45,45,45,-18,-19,-20,-21,]),'LESS':([37,],[47,]),'GREATER':([37,],[48,]),'STRING':([38,42,49,67,70,],[52,57,65,52,52,]),'NUMBER':([38,42,47,48,49,67,70,],[53,58,62,63,64,53,53,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'query':([0,],[2,]),'selection':([0,],[3,]),'deletion':([0,],[4,]),'insertion':([0,],[5,]),'updation':([0,],[6,]),'columns':([7,28,],[12,36,]),'column':([7,20,28,],[13,25,13,]),'table':([10,15,16,19,],[17,21,22,24,]),'updates':([23,],[29,]),'update':([23,38,],[30,53,]),'expression':([26,32,37,41,42,43,],[33,40,52,56,57,58,]),'fields':([35,67,],[47,68,]),'field':([35,64,67,],[48,66,48,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'query':([0,],[2,]),'selection':([0,],[3,]),'deletion':([0,],[4,]),'insertion':([0,],[5,]),'updation':([0,],[6,]),'showing':([0,],[7,]),'columns':([8,31,],[14,39,]),'column':([8,23,31,],[15,28,15,]),'table':([11,17,18,22,],[19,24,25,27,]),'updates':([26,],[32,]),'update':([26,41,],[33,56,]),'expression':([29,35,40,44,45,46,],[36,43,55,59,60,61,]),'fields':([38,70,],[50,71,]),'field':([38,67,70,],[51,69,51,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,37 +27,39 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> query SEMICOLON','statement',2,'p_statement','Parser.py',24),
-  ('query -> selection','query',1,'p_query','Parser.py',27),
-  ('query -> deletion','query',1,'p_query','Parser.py',28),
-  ('query -> insertion','query',1,'p_query','Parser.py',29),
-  ('query -> updation','query',1,'p_query','Parser.py',30),
-  ('setting -> SET TABLE STRING AS IDENTIFIER','setting',5,'p_set_table_from','Parser.py',34),
-  ('selection -> SELECT columns FROM table','selection',4,'p_select_from_table','Parser.py',46),
-  ('selection -> SELECT columns FROM table WHERE expression','selection',6,'p_select_from_expression','Parser.py',65),
-  ('deletion -> DELETE FROM table','deletion',3,'p_delete_from','Parser.py',69),
-  ('deletion -> DELETE FROM table WHERE expression','deletion',5,'p_delete_from_where','Parser.py',73),
-  ('insertion -> INSERT INTO table VALUES LPAREN fields RPAREN','insertion',7,'p_insert_into_table_fields','Parser.py',77),
-  ('insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN','insertion',10,'p_insert_into_table_columns_fields','Parser.py',81),
-  ('updation -> UPDATE table SET updates','updation',4,'p_update_set','Parser.py',85),
-  ('updation -> UPDATE table SET updates WHERE expression','updation',6,'p_update_set_where','Parser.py',89),
-  ('table -> IDENTIFIER','table',1,'p_table','Parser.py',93),
-  ('expression -> IDENTIFIER LESS NUMBER','expression',3,'p_expression','Parser.py',97),
-  ('expression -> IDENTIFIER GREATER NUMBER','expression',3,'p_expression','Parser.py',98),
-  ('expression -> IDENTIFIER EQUAL NUMBER','expression',3,'p_expression','Parser.py',99),
-  ('expression -> IDENTIFIER EQUAL STRING','expression',3,'p_expression','Parser.py',100),
-  ('expression -> expression OR expression','expression',3,'p_expression_relational_expression','Parser.py',104),
-  ('expression -> expression AND expression','expression',3,'p_expression_relational_expression','Parser.py',105),
-  ('expression -> expression COMMA expression','expression',3,'p_expression_expression','Parser.py',109),
-  ('columns -> column','columns',1,'p_columns_column','Parser.py',113),
-  ('columns -> columns COMMA column','columns',3,'p_columns_comma_column','Parser.py',117),
-  ('column -> IDENTIFIER','column',1,'p_column','Parser.py',121),
-  ('fields -> field','fields',1,'p_fields','Parser.py',125),
-  ('fields -> fields COMMA field','fields',3,'p_fields_comma_field','Parser.py',129),
-  ('field -> STRING','field',1,'p_field','Parser.py',133),
-  ('field -> NUMBER','field',1,'p_field','Parser.py',134),
-  ('updates -> update','updates',1,'p_updates_update','Parser.py',138),
-  ('updates -> updates COMMA update','updates',3,'p_updates_comma_update','Parser.py',142),
-  ('update -> IDENTIFIER EQUAL STRING','update',3,'p_update','Parser.py',146),
-  ('update -> IDENTIFIER EQUAL NUMBER','update',3,'p_update','Parser.py',147),
+  ('statement -> query SEMICOLON','statement',2,'p_statement','Parser.py',72),
+  ('query -> selection','query',1,'p_query','Parser.py',75),
+  ('query -> deletion','query',1,'p_query','Parser.py',76),
+  ('query -> insertion','query',1,'p_query','Parser.py',77),
+  ('query -> updation','query',1,'p_query','Parser.py',78),
+  ('query -> showing','query',1,'p_query','Parser.py',79),
+  ('showing -> SHOW TABLES','showing',2,'p_show_tables','Parser.py',83),
+  ('setting -> SET TABLE STRING AS IDENTIFIER','setting',5,'p_set_table_from','Parser.py',95),
+  ('selection -> SELECT columns FROM table','selection',4,'p_select_from_table','Parser.py',107),
+  ('selection -> SELECT columns FROM table WHERE expression','selection',6,'p_select_from_expression','Parser.py',130),
+  ('deletion -> DELETE FROM table','deletion',3,'p_delete_from','Parser.py',156),
+  ('deletion -> DELETE FROM table WHERE expression','deletion',5,'p_delete_from_where','Parser.py',170),
+  ('insertion -> INSERT INTO table VALUES LPAREN fields RPAREN','insertion',7,'p_insert_into_table_fields','Parser.py',198),
+  ('insertion -> INSERT INTO table LPAREN columns RPAREN VALUES LPAREN fields RPAREN','insertion',10,'p_insert_into_table_columns_fields','Parser.py',216),
+  ('updation -> UPDATE table SET updates WHERE expression','updation',6,'p_update_set_where','Parser.py',249),
+  ('updation -> UPDATE table SET updates','updation',4,'p_update_set','Parser.py',290),
+  ('table -> IDENTIFIER','table',1,'p_table','Parser.py',318),
+  ('expression -> IDENTIFIER LESS NUMBER','expression',3,'p_expression','Parser.py',322),
+  ('expression -> IDENTIFIER GREATER NUMBER','expression',3,'p_expression','Parser.py',323),
+  ('expression -> IDENTIFIER EQUAL NUMBER','expression',3,'p_expression','Parser.py',324),
+  ('expression -> IDENTIFIER EQUAL STRING','expression',3,'p_expression','Parser.py',325),
+  ('expression -> expression OR expression','expression',3,'p_expression_relational_expression','Parser.py',330),
+  ('expression -> expression AND expression','expression',3,'p_expression_relational_expression','Parser.py',331),
+  ('expression -> expression COMMA expression','expression',3,'p_expression_expression','Parser.py',335),
+  ('columns -> column','columns',1,'p_columns_column','Parser.py',339),
+  ('columns -> columns COMMA column','columns',3,'p_columns_comma_column','Parser.py',343),
+  ('column -> IDENTIFIER','column',1,'p_column','Parser.py',347),
+  ('fields -> field','fields',1,'p_fields','Parser.py',351),
+  ('fields -> fields COMMA field','fields',3,'p_fields_comma_field','Parser.py',355),
+  ('field -> STRING','field',1,'p_field','Parser.py',359),
+  ('field -> NUMBER','field',1,'p_field','Parser.py',360),
+  ('updates -> update','updates',1,'p_updates_update','Parser.py',364),
+  ('updates -> updates COMMA update','updates',3,'p_updates_comma_update','Parser.py',368),
+  ('update -> IDENTIFIER EQUAL STRING','update',3,'p_update','Parser.py',372),
+  ('update -> IDENTIFIER EQUAL NUMBER','update',3,'p_update','Parser.py',373),
 ]

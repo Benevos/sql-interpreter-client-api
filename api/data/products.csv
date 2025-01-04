@@ -1,0 +1,11 @@
+id,name,category,price,stock
+2,Desk Chair,Furniture,150.5,40
+4,Notebook,Stationery,3.5,500
+5,Water Bottle,Accessories,12.99,200
+7,Desk Chair,Furniture,150.5,40
+9,Notebook,Stationery,3.5,500
+10,Water Bottle,Accessories,12.99,200
+1,Laptop,'Home Electrics',1200.0,25
+3,Wireless Mouse,'Home Electrics',25.99,100
+6,Laptop,'Home Electrics',1200.0,25
+8,Wireless Mouse,'Home Electrics',25.99,100

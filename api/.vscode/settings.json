@@ -1,0 +1,24 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "__pycache__": true,
+        "src\\models/__pycache__": true,
+        "**/__pycache__": true,
+        "src\\models/*.*": false,
+        "**/.vscode": true,
+        ".vscode": true,
+        "src\\utils/parser.out": true,
+        "**/parser.out": true,
+        "src\\utils/*.out": true,
+        "src\\utils/*.*": false,
+        "parser.out": true,
+        "**/*.out": true,
+        "**/parsetab.py": true
+    },
+    "explorerExclude.backup": {}
+}

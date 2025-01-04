@@ -3,23 +3,16 @@ export default function Header()
 {
 
     return (
-        <header className="bg-blue-500 w-full flex justify-between">
-            <div className="bg-slate-300">
-                Page title
+        <header className="bg-slate-900 w-full flex justify-between border-b-[1px] h-[50px]">
+            <div>
+                <div className="bg-slate-300">
+                    BenevosSQL
+                </div>
+                <div>
+                    by Kevin Mendoza
+                </div>
             </div>
-            <nav className="bg-green-400">
-                <ul className="flex w-full">
-                    <li>
-                        Some 1
-                    </li>
-                    <li>
-                        Some 2
-                    </li>
-                    <li>
-                        Some 3
-                    </li>
-                </ul>
-            </nav>
+            
         </header>
     )
 }

@@ -20,6 +20,8 @@ yarn-error.log*
 next-env.d.ts
 .vercel
 __pycache__
+parser.out
+parsetab.py
 
 /client/node_modules
 /client/coverage

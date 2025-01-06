@@ -8,4 +8,5 @@ class Register(SQLModel, table=True):
     registerdatetime: datetime = Field(nullable=False)
     query: str = Field(nullable=False)
     success: bool = Field(nullable=False)
+    useragent: str = Field(nullable=False)
     

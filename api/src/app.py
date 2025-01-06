@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, Request
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -8,6 +8,7 @@ from utils.Parser import SQLParser
 from models.Query import Query
 from models.Register import Register
 from services.db_config import SessionDep, create_db_and_tables
+from starlette.requests import Request
 from uuid import uuid4
 import pandas as pd
 import logging
@@ -93,12 +94,15 @@ def process_query(query: Query, request: Request, session: SessionDep):
     
     success, message, tokens = parser.parse(query.content)
     
+    print(request.headers)
+    
     regsiter = Register(
         registerid = uuid4(),
         clientip = request.client,
         registerdatetime = datetime.now(),
         query = query.content,
-        success = success
+        success = success,
+        useragent = request.headers["user-agent"]
     )
     
     session.add(regsiter)
